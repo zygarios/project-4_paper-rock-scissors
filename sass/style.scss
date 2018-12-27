@@ -1,0 +1,57 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  background: lightgrey;
+}
+
+.buttonOption {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  padding: 20px 40px;
+  font-size: 2em;
+  border-radius: 10px;
+  border: 3px solid darkgrey;
+  margin: 30px;
+  box-shadow: 4px 4px 5px grey;
+  font-weight: 600;
+  width: 300px;
+  text-align: center;
+}
+.isHidden {
+  display: none;
+}
+.button-animation {
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  box-shadow: 4px 4px 5px grey;
+  &:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 1px grey;
+    filter: brightness(85%);
+  }
+}
+.newGame {
+  display: flex;
+  margin: 30px auto;
+  font-size: bold;
+  color: white;
+  background: #00af00;
+}
+
+.output-styles {
+  text-align: center;
+  font-size: 20px;
+}
+#result {
+  font-size: 8em;
+  font-weight: 900;
+}
+#round {
+  font-size: 2.5em;
+  padding-bottom: 30px;
+}
+
+.disabled {
+  cursor: grab;
+}
