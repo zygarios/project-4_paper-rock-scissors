@@ -9,7 +9,7 @@ var result = document.getElementById("result");
 var round = document.getElementById("round");
 var newGameButton = document.getElementById("newGame");
 var buttonsWrapper = document.querySelectorAll(".buttonOption button");
-
+var playerMoveButton = document.querySelectorAll('.player-move');
 var myChoiceScore, pcChoiceScore, setRounds, gameOn;
 
 function resetGame() {
@@ -85,22 +85,18 @@ function btnAnim() {
     buttonsWrapper[i].classList.remove("isHidden");
   }
 }
-function chooseButton(event) {
-  if (gameOn == true) {
-    myChoice(event.target.getAttribute("data-target") * 1);
-  } else {
-    output.innerHTML = "Game over, please press the new game button!";
+
+for (var i = 0; i < playerMoveButton.length; i++) {
+  function playerMove() {
+    if (gameOn == true) {
+      myChoice((this.getAttribute("data-target")) * 1);
+    } else {
+      output.innerHTML = "Game over, please press the new game button!";
+    }
   }
+  playerMoveButton[i].addEventListener('click', playerMove);
+
 }
-
-//Przycisk papier \\
-paperSelect.addEventListener("click", chooseButton);
-
-//Przycisk kamień \\
-rockSelect.addEventListener("click", chooseButton);
-
-//Przycisk nożyczki \\
-scissorsSelect.addEventListener("click", chooseButton);
 
 //Odblokowane buttony
 function enabledButton() {
@@ -117,7 +113,10 @@ newGameButton.addEventListener("click", function() {
     output.innerHTML = "Enter the correct number";
   } else {
     btnAnim();
+    myChoiceScore = 0;
+    pcChoiceScore = 0;
     enabledButton();
+
   }
 });
 
