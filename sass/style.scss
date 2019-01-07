@@ -82,7 +82,7 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate3d(-50%, -50%, 0);
+  transform: translate(-50%, -50%);
 
   h1 {
     color: #00af00;
@@ -93,55 +93,52 @@ button {
     padding-bottom: 15px;
   }
 }
-
 table {
   text-align: center;
-  width: 100%;
   border-collapse: collapse;
-
   thead {
     background: #00af00;
     color: white;
-
     th {
       padding: 10px 30px;
       font-size: 20px;
     }
   }
-
   tbody {
+    width: 400px;
     background: rgba(0,175,0,0.15);
+    max-height: 400px;
+    overflow-y: auto;
       td {
         padding: 10px 30px;
       }
-
   }
 }
+
 tbody tr:hover {
     background: rgba(0,175,0,0.35);
     cursor: pointer;
 }
 
 .close {
-  position: absolute;
-  right: 0;
-  top: 0;
-  line-height: 10px;
-  font-size: 20px;
-  height: 10px;
-  width: 10px;
-  padding: 10px;
-  margin: 15px;
-  border-radius: 50%;
-  color: #000;
   background: #00af00;
-  font-weight: bold;
+  position: relative;
+  left: 625px;
+  top: 10px;
+  display: inline-block;
+  margin: 0;
+  width: 30px;
+  height:30px;
+  border-radius: 10px;
   cursor: pointer;
-
   p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
     position: absolute;
-    top: -35%;
+    top: 8%;
     left: 30%;
+    color: white;
   }
 }
 
