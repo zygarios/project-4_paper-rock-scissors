@@ -10,17 +10,46 @@ var round = document.getElementById("round");
 var newGameButton = document.getElementById("newGame");
 var buttonsWrapper = document.querySelectorAll(".buttonOption button");
 var playerMoveButton = document.querySelectorAll('.player-move');
-var myChoiceScore, pcChoiceScore, setRounds, gameOn;
+var progressTable = document.querySelector('.progressTable');
+
+// Modale
+function showModal() {
+  document.querySelector("#modal-overlay").classList.add("show");
+};
+
+var modal = document.querySelector('#modal');
+var overlay = document.querySelector("#modal-overlay");
+
+function hideModal() {
+  overlay.classList.remove("show");
+};
+var closeButton = document.querySelector("#modal .close");
+closeButton.addEventListener("click", hideModal);
+overlay.addEventListener("click", hideModal);
+
+modal.addEventListener("click", function() {
+  event.stopPropagation();
+});
+
+//Results
+var params = {
+  gameOn: false,
+  myChoiceScore: 0,
+  pcChoiceScore: 0,
+  setRounds: 0,
+  roundValue: 0,
+  progress: []
+}
 
 function resetGame() {
   // btnAnim();
-  gameOn = false;
-  myChoiceScore = 0;
-  pcChoiceScore = 0;
-  setRounds = 0;
+  params.gameOn = false;
+  params.myChoiceScore = 0;
+  params.pcChoiceScore = 0;
+  params.setRounds = 0;
+  params.roundValue = 0;
+  params.progress = [];
 }
-
-resetGame();
 
 //Losowanie wyniku komputerowi \\
 var pcChoiceResult = function() {
@@ -42,17 +71,17 @@ function numToText(result) {
 //Porównanie losów
 function compare(myChoice, pcChoice) {
   if (myChoice === pcChoice) {
-    return "<strong>DRAW: </strong>";
+    return "DRAW";
   } else if (
     (myChoice === 1 && pcChoice === 2) ||
     (myChoice === 2 && pcChoice === 3) ||
     (myChoice === 3 && pcChoice === 1)
   ) {
-    myChoiceScore++;
-    return "<strong>YOU WON:</strong> ";
+    params.myChoiceScore++;
+    return "WIN";
   } else {
-    pcChoiceScore++;
-    return "<strong>YOU LOST:</strong> ";
+    params.pcChoiceScore++;
+    return "LOSE";
   }
 }
 
@@ -67,17 +96,6 @@ function outputSingleResult(compareResult, myText, itsText) {
     ". <br><br>";
 }
 
-//Wybór przycisku 1,2,3
-function myChoice(choice) {
-  var pcChoice = pcChoiceResult();
-  var compareResult = compare(choice, pcChoice);
-  var myText = numToText(choice);
-  var itsText = numToText(pcChoice);
-  outputSingleResult(compareResult, myText, itsText);
-  result.innerHTML = myChoiceScore + " - " + pcChoiceScore;
-  allScore();
-}
-
 //Animacja dla odblokowanych przycisków
 function btnAnim() {
   for (var i = 0; i < buttonsWrapper.length; i++) {
@@ -85,10 +103,30 @@ function btnAnim() {
     buttonsWrapper[i].classList.remove("isHidden");
   }
 }
+//Wybór przycisku 1,2,3
+function myChoice(choice) {
+  var pcChoice = pcChoiceResult();
+  var compareResult = compare(choice, pcChoice);
+  var compareResultText = `<strong>YOU ${compareResult}: </strong>`;
+  var myText = numToText(choice);
+  var itsText = numToText(pcChoice);
+  outputSingleResult(compareResultText, myText, itsText);
+  result.innerHTML = params.myChoiceScore + " - " + params.pcChoiceScore;
+
+  params.progress[params.roundValue] = {
+    roundValue: ++params.roundValue,
+    myMove: myText,
+    pcMove: itsText,
+    roundResult: compareResult,
+    roundScore: result.innerHTML
+  }
+  allScore();
+}
+
 
 for (var i = 0; i < playerMoveButton.length; i++) {
   function playerMove() {
-    if (gameOn == true) {
+    if (params.gameOn == true) {
       myChoice((this.getAttribute("data-target")) * 1);
     } else {
       output.innerHTML = "Game over, please press the new game button!";
@@ -100,33 +138,47 @@ for (var i = 0; i < playerMoveButton.length; i++) {
 
 //Odblokowane buttony
 function enabledButton() {
-  gameOn = true;
-  round.innerHTML = "Points to win: " + setRounds;
-  result.innerHTML = myChoiceScore + " - " + pcChoiceScore;
-  output.innerHTML = "";
+  params.gameOn = true;
+  round.innerHTML = "Points to win: " + params.setRounds;
+  result.innerHTML = params.myChoiceScore + " - " + params.pcChoiceScore;
 }
 
 //Przycisk NewGame
 newGameButton.addEventListener("click", function() {
-  setRounds = parseInt(prompt("Set number of rounds: "));
-  if (isNaN(setRounds) || setRounds === 0) {
+  resetGame();
+  params.setRounds = parseInt(prompt("Set number of rounds: "));
+  if (isNaN(params.setRounds) || params.setRounds === 0) {
     output.innerHTML = "Enter the correct number";
   } else {
     btnAnim();
-    myChoiceScore = 0;
-    pcChoiceScore = 0;
     enabledButton();
-
   }
 });
 
+//Generator Tabeli
+function tableGenerator () {
+  var allRows = ``;
+  params.progress.forEach(function(eachRow) {
+    allRows += `<tr><td>${eachRow.roundValue}</td>
+    <td>${eachRow.myMove}</td>
+    <td>${eachRow.pcMove}</td>
+    <td>${eachRow.roundResult}</td>
+    <td>${eachRow.roundScore}</td></tr>`;
+  });
+  progressTable.innerHTML = allRows;
+}
+
 //Pętla zliczająca punkty pozostałe do wygranej
 function allScore() {
-  if (myChoiceScore === setRounds) {
-    output.innerHTML += "<strong>YOU WON THE ENTIRE GAME!!!</strong>";
+  if (params.myChoiceScore === params.setRounds) {
+    modal.querySelector('h1').textContent = 'YOU WON GAME!!!';
+    tableGenerator();
+    showModal();
     resetGame();
-  } else if (pcChoiceScore === setRounds) {
-    output.innerHTML += "<strong>YOU LOST THE ENTIRE GAME!!!</strong>";
+  } else if (params.pcChoiceScore === params.setRounds) {
+    modal.querySelector('h1').textContent = 'YOU LOST GAME!!!';
+    tableGenerator();
+    showModal();
     resetGame();
   }
 }

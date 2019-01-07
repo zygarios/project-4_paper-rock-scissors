@@ -9,18 +9,47 @@
 </head>
 
 <body>
-  <button id="newGame" class='newGame button-animation'>NEW GAME</button>
-  <div class="buttonOption">
-    <button id="paper" class='button-animation isHidden player-move' data-target='1'>Paper</button>
-    <button id="rock" class='button-animation isHidden player-move' data-target='2'>Rock</button>
-    <button id="scissors" class='button-animation isHidden player-move' data-target='3'>Scissors</button>
+
+  <div class="gameTable">
+
+    <button id="newGame" class='newGame button-animation'>NEW GAME</button>
+    <div class="buttonOption">
+      <button id="paper" class='button-animation isHidden player-move' data-target='1'>Paper</button>
+      <button id="rock" class='button-animation isHidden player-move' data-target='2'>Rock</button>
+      <button id="scissors" class='button-animation isHidden player-move' data-target='3'>Scissors</button>
+    </div>
+    <div id="round" class="output-styles">
+    </div>
+    <div id="output" class="output-styles">
+    </div>
+    <div id='result' class="output-styles">
+    </div>
+
   </div>
-  <div id="round" class="output-styles">
+  <!-- MODAL -->
+  <div class="overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <div href="#" class="close"><p>x</p>
+      </p></div>
+      <header>SCOREBOARD:</header>
+      <h1></h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Player</th>
+            <th>Computer</th>
+            <th>Result</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody class="progressTable">
+
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div id="output" class="output-styles">
-  </div>
-  <div id='result' class="output-styles">
-  </div>
-  <script src ='js/script.js'></script>
+  <script src='js/script.js'></script>
 </body>
+
 </html>
